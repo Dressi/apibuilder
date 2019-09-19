@@ -1,0 +1,30 @@
+version: '3'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile_app
+    ports:
+      - "9000:9000"
+    depends_on:
+      - api
+    links:
+      - api
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile_api
+    ports:
+      - "9001:9001"
+    depends_on:
+      - db
+    links:
+      - db
+  db:
+    image: "flowcommerce/apibuilder-postgresql:latest"
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    volumes:
+      - ./db:/var/lib/postgresql/data
